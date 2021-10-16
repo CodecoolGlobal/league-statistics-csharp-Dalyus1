@@ -11,5 +11,6 @@ namespace Codecool.LeagueStatistics.View
     public static class Display
     {
 
+
     }
 }
