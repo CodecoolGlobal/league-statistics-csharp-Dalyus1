@@ -52,7 +52,7 @@ namespace Codecool.LeagueStatistics.Model
         /// <param name="teams"></param>
         /// <returns></returns>
         public static IEnumerable<Player> GetTopPlayersFromEachTeam(this IEnumerable<Team> teams)
-            => (IEnumerable<Player>)teams.GroupJoin(teams, x => x.Players, y => y.Players, (x, y) => new { x, y });
+            => (IEnumerable<Player>)teams.Select(t => t.Players.OrderBy(f => f.Goals).Take(10));
 
         /// <summary>
         ///     Returns the division with greatest amount of points.
@@ -60,8 +60,8 @@ namespace Codecool.LeagueStatistics.Model
         /// </summary>
         /// <param name="teams"></param>
         /// <returns></returns>
-        public static Division GetStrongestDivision(this IEnumerable<Team> teams)
-            => throw new NotImplementedException();
+        //public static Division GetStrongestDivision(this IEnumerable<Team> teams)
+        //    => 
 
         /// <summary>
         ///     Gests all teams, where there are players with no scored goals.
@@ -69,7 +69,7 @@ namespace Codecool.LeagueStatistics.Model
         /// <param name="teams"></param>
         /// <returns></returns>
         public static IEnumerable<Team> GetTeamsWithPlayersWithoutGoals(this IEnumerable<Team> teams)
-            => throw new NotImplementedException();
+            => teams.OrderBy(t => t.Players.Where(x => x.Goals == 0));
 
         /// <summary>
         /// Gets players with given or higher number of goals scored.
@@ -78,7 +78,7 @@ namespace Codecool.LeagueStatistics.Model
         /// <param name="goals">The minimal number of golas scored.</param>
         /// <returns>Collection of Players with given or higher number of goals scored.</returns>
         public static IEnumerable<Player> GetPlayersWithAtLeastXGoals(this IEnumerable<Team> teams, int goals)
-            => throw new NotImplementedException();
+            => (IEnumerable<Player>)teams.Select(t => t.Players.OrderBy(f => f.Goals >= goals));
 
         /// <summary>
         ///     Gets the player with the highest skill rate for given Division.
@@ -87,7 +87,7 @@ namespace Codecool.LeagueStatistics.Model
         /// <param name="division"></param>
         /// <returns></returns>
         public static Player GetMostTalentedPlayerInDivision(this IEnumerable<Team> teams, Division division)
-            => throw new NotImplementedException();
+            => (Player)teams.GetAllPlayers().OrderBy(t => t.SkillRate).Take(1);
 
     }
 }
